@@ -3,6 +3,12 @@ var path = require('path'),
        env = process.env.NODE_ENV || 'development';
 
 var config = {  
+        test: {
+            root: rootPath,
+            app: { name: 'UCCSS' },
+            port: 4000,
+        },
+        
        development: {    
                    root: rootPath,    
                    app: {      name: 'UCCSS'    },    

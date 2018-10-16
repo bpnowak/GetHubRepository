@@ -1,4 +1,6 @@
 var express = require('express');
+var morgan = require('morgan');
+var logger = require('./logger');
 
 module.exports = function (app, config) {
 
@@ -6,6 +8,8 @@ module.exports = function (app, config) {
         console.log('Request from ' + req.connection.remoteAddress);
         next();
     });
+
+    app.use(morgan('dev'));
 
     app.use(express.static(config.root + '/public'));
 
