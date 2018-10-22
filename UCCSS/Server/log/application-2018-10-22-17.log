@@ -1,2 +1,8 @@
 {"level":"info","message":"Starting application"}
 {"level":"info","message":"HTTP Server listening on port: %d, in %s mode"}
+{"level":"info","message":"Get all users"}
+{"level":"info","message":"Create a user"}
+{"level":"info","message":"Update user"}
+{"level":"error","message":"File not found"}
+{"level":"info","message":"Starting application"}
+{"level":"info","message":"HTTP Server listening on port: %d, in %s mode"}
