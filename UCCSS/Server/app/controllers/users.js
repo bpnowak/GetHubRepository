@@ -20,6 +20,21 @@ module.exports = function (app, config) {
         res.status(200).json({ message: 'Create a user' });
     });
 
+    router.route('/users').put(function (req, res, next) {
+        logger.log('info', 'Update user');
+        res.status(200).json({ message: 'Update user' });
+    });
+
+    router.route('/users/password/:id').put(function (req, res, next) {
+        logger.log('info', 'Update user password for user with id %s', req.params.id);
+        res.status(200).json({ message: 'Update user password for user with id ' + req.params.id });
+    });
+
+    router.route('/users/:id').delete(function (req, res, next) {
+        logger.log('info', 'Delete user %s', req.params.id);
+        res.status(200).json({ message: 'Delete user ' + req.params.id });
+    });
+
     router.route('/login').post(function(req, res, next) {
         console.log(req.body);
         var email = req.body.email
