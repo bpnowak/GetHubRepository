@@ -37,14 +37,17 @@ module.exports = function (app, config) {
 
     app.use(express.static(config.root + '/public'));
 
+    // require('../app/models/users');
+    // require('../app/controllers/users')(app, config);
+
     var models = glob.sync(config.root + '/app/models/*.js');
     models.forEach(function (model) {
-        require(model);
+      require(model);
     });
-
+  
     var controllers = glob.sync(config.root + '/app/controllers/*.js');
     controllers.forEach(function (controller) {
-        require(controller)(app, config);
+      require(controller)(app, config);
     });
 
     app.use(function (req, res) {
