@@ -18,7 +18,7 @@ var HelpTicketSchema = new Schema({
     title: { type: String },
     personId: { type: Schema.Types.ObjectId },
     ownerId: { type: Schema.Types.ObjectId },
-    Status: { type: String, enum: ['new', 'inProcess', 'closed'] },
+    status: { type: String, enum: ['new', 'inProcess', 'closed'] },
     dateCreated: { type: Date, default: Date.now }
 });
 

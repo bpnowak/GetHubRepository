@@ -31,7 +31,13 @@ module.exports = function (app, config) {
 
     router.get('/helpTickets/:id', asyncHandler(async (req, res) => {
         logger.log('info', 'Get HelpTicket %s', req.params.id);
-        await HelpTicket.findById().then(result => {
+        let query = HelpTicket.find();
+        query
+            .sort(req.query.order)
+            .populate({path: 'personId', model: 'User', select: 'lastName firstName fullName'} )
+            .populate({path: 'ownerId', model: 'User', select: 'lastName firstName fullName'} );
+
+        await HelpTicket.findById(req.params.id).then(result => {
             res.status(200).json(result);
         })
     }));
@@ -70,7 +76,7 @@ module.exports = function (app, config) {
 
     router.get('/helpTicketContents/helpTicket/:id', asyncHandler(async (req, res) => {
         logger.log('info', 'Getting a HelpTickets Content');
-        let query = HelpTicketContent.find({HelpTicketId: req.params.id});
+        let query = HelpTicketContent.find({helpTicketId: req.params.id})
         await query.exec().then(result => {
             res.status(200).json(result);
         })
@@ -78,7 +84,7 @@ module.exports = function (app, config) {
 
     router.post('/helpTicketContents', asyncHandler(async (req, res) => {
         logger.log('info', 'Creating HelpTicket Content');
-        var HelpTicketContent = new HelpTicketContent(req.body);
+        var helpTicketContent = new HelpTicketContent(req.body);
         const result = await helpTicketContent.save()
         res.status(201).json(result);
     }));
