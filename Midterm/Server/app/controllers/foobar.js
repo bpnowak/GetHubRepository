@@ -19,7 +19,7 @@ module.exports = function (app, config) {
 
     router.get('/foos/:id', asyncHandler(async (req, res) => {
         logger.log('info', 'Get foo %s', req.params.id);
-        await Todo.findById(req.params.id).then(result => {
+        await Foo.findById(req.params.id).then(result => {
             res.status(200).json(result);
         })
     }));

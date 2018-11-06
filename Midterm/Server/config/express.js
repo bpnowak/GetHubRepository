@@ -40,7 +40,7 @@ module.exports = function (app, config) {
     require('../app/controllers/foobar')(app, config);
 
     app.use(function (req, res) {
-        logger.log('error', 'File not found');
+        // logger.log('error', 'File not found');
         res.type('text/plan');
         res.status(404);
         res.send('404 Not Found');
