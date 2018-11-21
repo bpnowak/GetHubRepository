@@ -1,0 +1,14 @@
+<template>
+        First Name: <input value.bind="user.firstName">
+        Last Name: <input value.bind="user.lastName">
+        active: <input type="checkbox" checked.bind="user.active">
+            role: <select value.bind="user.role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+            <option value="staff">Staff</option>
+            </select>
+        Email: <input value.bind="user.email">
+        Password: <input value.bind="user.password">
+        <button click.trigger="save()">Save</button>
+    </template>
+    
