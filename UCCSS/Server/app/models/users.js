@@ -11,7 +11,7 @@ var userSchema = new Schema({
     password: { type: String, require: true }
 });
 
-userSchema.virtual('fullName')
+UserSchema.virtual('fullName')
     .get(function() {
         return this.firstname + ' ' + this.lastname;
     });
