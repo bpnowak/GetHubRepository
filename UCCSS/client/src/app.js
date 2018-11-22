@@ -3,7 +3,12 @@ export class App {
     this.router = router;
     config.map([
       {
-        route: ['', 'home'],
+        route: ['', 'landing'],
+        moduleId: './modules/landing',
+        name: 'Landings'
+      },
+      {
+        route: ['home'],
         moduleId: './modules/home',
         name: 'Home'
       },

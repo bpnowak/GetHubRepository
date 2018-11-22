@@ -11,6 +11,18 @@ export class Users {
         this.showUserEditForm = false;
     }
 
+    async activate() {
+        await this.getUsers();
+    }
+
+    attached() {
+        feather.replace()
+    }
+
+    async getUsers() {
+        await this.users.getUsers();
+    }
+
     newUser() {
         this.user = {
             firstName: "",
@@ -20,13 +32,47 @@ export class Users {
             email: "",
             password: ""
         }
+        this.openEditForm();
+
+    }
+
+    editUser(user) {
+        this.user = user;
+        this.openEditForm();
+    }
+
+    openEditForm() {
         this.showUserEditForm = true;
+        setTimeout(() => { $("#firstName").focus(); }, 500);
+    }
+
+    changeActive(user) {
+        this.user = user;
+        this.save();
     }
 
     async save() {
         if (this.user && this.user.firstName && this.user.lastName
-            && this.user.email && this.user.password)
+            && this.user.email && this.user.password) {
             await this.users.saveUser(this.user);
+            await this.getUsers();
+            this.back();
+        }
     }
+
+    async delete() {
+        if (this.user) {
+            await this.users.delete(this.user);
+            await this.getUsers();
+            this.back();
+        }
+    }
+
+    back() {
+        this.showUserEditForm = false;
+    }
+
+
+
 }
 
