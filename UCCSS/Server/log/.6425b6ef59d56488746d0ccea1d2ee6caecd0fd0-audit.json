@@ -29,6 +29,21 @@
             "date": 1542859689569,
             "name": "log\\error-2018-11-21-22.log",
             "hash": "e7f75e0af2c2efaf387fa535af39616c"
+        },
+        {
+            "date": 1543511518118,
+            "name": "log\\error-2018-11-29-11.log",
+            "hash": "072e074fe5ed817dc02c7321660e52d4"
+        },
+        {
+            "date": 1543514667938,
+            "name": "log\\error-2018-11-29-12.log",
+            "hash": "0aaf60da9e0c3e873c55dd51734a35bb"
+        },
+        {
+            "date": 1543543819510,
+            "name": "log\\error-2018-11-29-20.log",
+            "hash": "be535223130787dd67e294e07144070f"
         }
     ]
 }
