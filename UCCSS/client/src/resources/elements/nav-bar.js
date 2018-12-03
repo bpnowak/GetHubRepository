@@ -56,11 +56,10 @@ export class NavBar {
     // }
 
     logout() {
-        if (this.userObj) this.auth.logout(this.userObj.email);
+        this.auth.logout();
+        // if (this.userObj) this.auth.logout(this.userObj.email);
         sessionStorage.removeItem('user');
         this.isAuthenticated = this.auth.isAuthenticated();
-        this.auth.logout();
-        console.log(this.email);
     }
 
 }
