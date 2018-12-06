@@ -5,13 +5,13 @@ import { HelpTicket } from '../resources/data/help-ticket-object';
 @inject(HelpTicket)
 export class HelpTickets {
 
-    constructor(helpTicket){
+    constructor(helpTicket) {
         this.helpTickets = helpTicket;
         this.showHelpTicketEditForm = false;
-        this.message="HelpTickets";
+        this.message = "HelpTickets";
         this.userObj = JSON.parse(sessionStorage.getItem('userObj'));
     }
-        
+
     async activate() {
         await this.getHelpTicket();
     }
@@ -35,14 +35,15 @@ export class HelpTickets {
             ownerId: "a1a1a1a1a1a1a1a1a1a1a1a1",
             status: 'new'
         };
-            
+
         this.helpTicketContent = {
             personId: this.userObj._id,
-            content: ""
+            content: "",
+            dateCreated: ""
         };
         this.showEditForm();
     }
-    
+
     async editHelpTicket(helpTicket) {
         this.helpTicket = helpTicket;
         this.helpTicketContent = {
@@ -56,7 +57,7 @@ export class HelpTickets {
         this.showHelpTicketEditForm = false;
     }
 
-    async save() {
+    async saveHelpTicket() {
         if (this.helpTicket && this.helpTicket.title && this.helpTicketContent && this.helpTicketContent.content) {
             if (this.userObj.role !== 'user') {
                 this.helpTicket.ownerId = this.userObj._id;
@@ -66,6 +67,26 @@ export class HelpTickets {
             await this.getHelpTicket();
             this.back();
         }
-    }  
+    }
+
+    // async deleteHelpTicket() {
+    //     if (this.helpTicket && this.helpTicket.title && this.helpTicketContent && this.helpTicketContent.content) {
+    //         let helpTicket = { helpTicket: this.helpTicket, content: this.helpTicketContent };
+    //         await this.helpTickets.deleteHelpTicket(helpTicket);
+    //         await this.getHelpTicket();
+    //         this.back();
+    //     }
+    // }
+
+    async deleteHelpTicket() {
+        console.log('did not delete');
+        if (this.helpTicket) {
+            await this.helpTickets.deleteHelpTicket(this.helpTicket);
+            await this.getHelpTicket();
+            this.back();
+            console.log('maybe deleted');
+        }
+    }
+
 
 }

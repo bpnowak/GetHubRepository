@@ -34,4 +34,19 @@ export class HelpTicket {
         }
     }
 
+    async deleteHelpTicket(helpTicket) {
+        if (helpTicket && helpTicket._id) {
+            await this.data.delete(this.HELP_TICKET_SERVICE + '/' + helpTicket._id)
+        }
+    }
+
+    async getHelpTicketsContents() {
+        let response = await this.data.get(this.HELP_TICKET_SERVICE);
+        if (!response.error) {
+            this.helpTicketscontentArray = response;
+        } else {
+            this.helpTicketscontentArray = [];
+        }     
+    }
+
 }
