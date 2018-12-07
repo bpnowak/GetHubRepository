@@ -1,7 +1,7 @@
 var express = require('express'),
     router = express.Router(),
     logger = require('../../config/logger'),
-    mongoose = require('mongoose')
+    mongoose = require('mongoose'),
 HelpTicket = mongoose.model('HelpTicket'),
     HelpTicketContent = mongoose.model('HelpTicketContent'),
     asyncHandler = require('express-async-handler');
@@ -12,10 +12,9 @@ module.exports = function (app, config) {
     router.get('/helpTickets', asyncHandler(async (req, res) => {
         logger.log('info', 'Get all HelpTickets');
         let query = HelpTicket.find();
-        query
-            .sort(req.query.order)
-            .populate({ path: 'personId', model: 'User', select: 'lastName firstName fullName' })
-            .populate({ path: 'ownerId', model: 'User', select: 'lastName firstName fullName' });
+        query.sort(req.query.order)
+        .populate({path: 'personId', model: 'User', select: 'lastName firstName fullName'} )
+        .populate({path: 'ownerId', model: 'User', select: 'lastName firstName fullName'} );
 
         if (req.query.status) {
             if (req.query.status[0] == '-') {
@@ -32,10 +31,9 @@ module.exports = function (app, config) {
     router.get('/helpTickets/:id', asyncHandler(async (req, res) => {
         logger.log('info', 'Get HelpTicket %s', req.params.id);
         let query = HelpTicket.find();
-        query
-            .sort(req.query.order)
-            .populate({ path: 'personId', model: 'User', select: 'lastName firstName fullName' })
-            .populate({ path: 'ownerId', model: 'User', select: 'lastName firstName fullName' });
+        query.sort(req.query.order)
+        .populate({path: 'personId', model: 'User', select: 'lastName firstName fullName'} )
+        .populate({path: 'ownerId', model: 'User', select: 'lastName firstName fullName'} );
 
         await HelpTicket.findById(req.params.id).then(result => {
             res.status(200).json(result);
@@ -89,8 +87,8 @@ module.exports = function (app, config) {
     }));
 
     router.delete('/helpTickets/:id', asyncHandler(async (req, res) => {
-        logger.log('info', 'Deleting HelpTicket %s', req.params.id);
-        await HelpTicket.remove({ _id: req.body._id })
+        logger.log('info', 'Deleting helpTicket %s', req.params.id);
+        await HelpTicket.remove({ _id: req.params.id })
             .then(result => {
                 res.status(200).json(result);
             })
@@ -100,6 +98,16 @@ module.exports = function (app, config) {
         logger.log('info', 'Getting HelpTicket Content');
         let query = HelpTicketContent.find();
         query.sort(req.query.order)
+        .populate({path: 'personId', model: 'User', select: 'lastName firstName fullName'} )
+        .populate({path: 'ownerId', model: 'User', select: 'lastName firstName fullName'} );
+
+        if (req.query.status) {
+            if (req.query.status[0] == '-') {
+                query.where('status').ne(req.query.status.substring(1));
+            } else {
+                query.where('status').eq(req.query.status);
+            }
+        }
         await query.exec().then(result => {
             res.status(200).json(result);
         })
@@ -108,7 +116,11 @@ module.exports = function (app, config) {
     router.get('/helpTicketContents/helpTicket/:id', asyncHandler(async (req, res) => {
         logger.log('info', 'Getting a HelpTickets Content');
         let query = HelpTicketContent.find({ helpTicketId: req.params.id })
-        await query.exec().then(result => {
+        query.sort(req.query.order)
+        .populate({path: 'personId', model: 'User', select: 'lastName firstName fullName'} )
+        .populate({path: 'ownerId', model: 'User', select: 'lastName firstName fullName'} );
+
+        await HelpTicketContent.findById(req.params.id).then(result => {
             res.status(200).json(result);
         })
     }));

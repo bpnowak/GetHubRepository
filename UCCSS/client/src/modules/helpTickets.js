@@ -13,7 +13,8 @@ export class HelpTickets {
     }
 
     async activate() {
-        await this.getHelpTicket();
+        // await this.getHelpTicket();
+        await this.helpTickets.getHelpTickets(this.userObj);
     }
 
     showEditForm() {
@@ -35,11 +36,10 @@ export class HelpTickets {
             ownerId: "a1a1a1a1a1a1a1a1a1a1a1a1",
             status: 'new'
         };
-
         this.helpTicketContent = {
             personId: this.userObj._id,
             content: "",
-            dateCreated: ""
+            // dateCreated: ""
         };
         this.showEditForm();
     }
@@ -51,9 +51,11 @@ export class HelpTickets {
             content: ""
         };
         await this.helpTickets.getHelpTicketsContents(helpTicket._id);  //this line of code is not working.  Cannot see discription of helpTicketContent
+        // console.log(this.helpTickets.getHelpTicketsContents(helpTicket._id));
         this.showEditForm();
     }
     back() {
+        this.helpTicketscontentArray = [];
         this.showHelpTicketEditForm = false;
     }
 
@@ -68,15 +70,6 @@ export class HelpTickets {
             this.back();
         }
     }
-
-    // async deleteHelpTicket() {
-    //     if (this.helpTicket && this.helpTicket.title && this.helpTicketContent && this.helpTicketContent.content) {
-    //         let helpTicket = { helpTicket: this.helpTicket, content: this.helpTicketContent };
-    //         await this.helpTickets.deleteHelpTicket(helpTicket);
-    //         await this.getHelpTicket();
-    //         this.back();
-    //     }
-    // }
 
     async deleteHelpTicket() {
         console.log('did not delete');
