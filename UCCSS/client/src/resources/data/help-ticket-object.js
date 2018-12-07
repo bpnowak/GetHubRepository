@@ -7,7 +7,7 @@ export class HelpTicket {
     constructor(data) {
         this.data = data;
         this.HELP_TICKET_SERVICE = 'helpTickets';
-        this.HELP_TICKETCONTENT_SERVICE = 'helpTicketContents';
+        this.HELP_TICKETCONTENT_SERVICE = 'helpTicketContents/helpTicket';
     }
 
     async getHelpTickets(userObj) {
@@ -43,11 +43,21 @@ export class HelpTicket {
         }
     }
 
-    async getHelpTicketsContents() {
-        let url = this.HELP_TICKETCONTENT_SERVICE;
-        // let url = this.HELP_TICKETCONTENT_SERVICE + '/' + helpTicket._id;
+    // async getHelpTicketsContents() {
+    //     // let url = this.HELP_TICKETCONTENT_SERVICE;
+    //     let response = await this.data.get(url);
+    //     console.log(this.HELP_TICKETCONTENT_SERVICE);
+    //     if (!response.error) {
+    //         this.helpTicketscontentArray = response;
+    //     } else {
+    //         this.helpTicketscontentArray = [];
+    //     }     
+    // }
+
+    async getHelpTicketsContents(helpTicketId) {
+        let url = this.HELP_TICKETCONTENT_SERVICE + '/' + helpTicketId;
         let response = await this.data.get(url);
-        // console.log(helpTicket._id);
+        console.log(helpTicketId);
         if (!response.error) {
             this.helpTicketscontentArray = response;
         } else {
