@@ -5,11 +5,15 @@ var express = require('express'),
     HelpTicket = mongoose.model('HelpTicket'),
     HelpTicketContent = mongoose.model('HelpTicketContent'),
     asyncHandler = require('express-async-handler');
+    passportService = require('../../config/passport'),
+    passport = require('passport');
+
+    var requireAuth = passport.authenticate('jwt', { session: false});
 
 module.exports = function (app, config) {
     app.use('/api', router);
 
-    router.get('/helpTickets', asyncHandler(async (req, res) => {
+    router.get('/helpTickets', requireAuth, asyncHandler(async (req, res) => {
         logger.log('info', 'Get all HelpTickets');
         let query = HelpTicket.find();
         query.sort(req.query.order)
@@ -28,7 +32,7 @@ module.exports = function (app, config) {
         })
     }));
 
-    router.get('/helpTickets/:id', asyncHandler(async (req, res) => {
+    router.get('/helpTickets/:id', requireAuth, asyncHandler(async (req, res) => {
         logger.log('info', 'Get HelpTicket %s', req.params.id);
         let query = HelpTicket.find();
         query.sort(req.query.order)
@@ -48,7 +52,7 @@ module.exports = function (app, config) {
     //         })
     // }));
 
-    router.put('/helpTickets', asyncHandler(async (req, res) => {
+    router.put('/helpTickets', requireAuth, asyncHandler(async (req, res) => {
         logger.log('info', 'Updating HelpTicket');
         await HelpTicket.findOneAndUpdate({ _id: req.body.helpTicket._id }, req.body.helpTicket, { new: true })
             .then(result => {
@@ -72,7 +76,7 @@ module.exports = function (app, config) {
     //     res.status(200).json(result);
     // }));
 
-    router.post('/helpTickets', asyncHandler(async (req, res) => {
+    router.post('/helpTickets', requireAuth, asyncHandler(async (req, res) => {
         logger.log('info', 'Creating HelpTicket');
         var helpTicket = new HelpTicket(req.body.helpTicket);
         await helpTicket.save()
@@ -86,7 +90,7 @@ module.exports = function (app, config) {
             })
     }));
 
-    router.delete('/helpTickets/:id', asyncHandler(async (req, res) => {
+    router.delete('/helpTickets/:id', requireAuth, asyncHandler(async (req, res) => {
         logger.log('info', 'Deleting helpTicket %s', req.params.id);
         await HelpTicket.remove({ _id: req.params.id })
             .then(result => {
@@ -94,7 +98,7 @@ module.exports = function (app, config) {
             })
     }));
 
-    router.get('/helpTicketContents', asyncHandler(async (req, res) => {
+    router.get('/helpTicketContents', requireAuth, asyncHandler(async (req, res) => {
         logger.log('info', 'Getting HelpTicket Content');
         let query = HelpTicketContent.find();
         query.sort(req.query.order)
@@ -113,7 +117,7 @@ module.exports = function (app, config) {
         })
     }));
 
-    router.get('/helpTicketContents/helpTicket/:id', asyncHandler(async (req, res) => {
+    router.get('/helpTicketContents/helpTicket/:id', requireAuth, asyncHandler(async (req, res) => {
         logger.log('info', 'Get help ticket content for help ticket %s', req.params.id);
         let query = HelpTicketContent.find();
         query
@@ -123,7 +127,7 @@ module.exports = function (app, config) {
         })
     }));
 
-    router.post('/helpTicketContents', asyncHandler(async (req, res) => {
+    router.post('/helpTicketContents', requireAuth, asyncHandler(async (req, res) => {
         logger.log('info', 'Creating HelpTicket Content');
         var helpTicketContent = new HelpTicketContent(req.body);
         const result = await helpTicketContent.save()
