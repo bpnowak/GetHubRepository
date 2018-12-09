@@ -5,10 +5,12 @@ var express = require('express'),
     HelpTicket = mongoose.model('HelpTicket'),
     HelpTicketContent = mongoose.model('HelpTicketContent'),
     asyncHandler = require('express-async-handler');
-    passportService = require('../../config/passport'),
-    passport = require('passport');
+passportService = require('../../config/passport'),
+    passport = require('passport'),
+    multer = require('multer'),
+    mkdirp = require('mkdirp');
 
-    var requireAuth = passport.authenticate('jwt', { session: false});
+var requireAuth = passport.authenticate('jwt', { session: false });
 
 module.exports = function (app, config) {
     app.use('/api', router);
@@ -61,7 +63,8 @@ module.exports = function (app, config) {
                     var helpTicketContent = new HelpTicketContent(req.body.content);
                     helpTicketContent.save()
                         .then(content => {
-                            res.status(201).json(result);
+                            // res.status(201).json(result);
+                            res.status(201).json({contentID: content._id});
                         })
                 } else {
                     res.status(200).json(result);
@@ -85,7 +88,8 @@ module.exports = function (app, config) {
                 var helpTicketContent = new HelpTicketContent(req.body.content);
                 helpTicketContent.save()
                     .then(content => {
-                        res.status(201).json(result);
+                        // res.status(201).json(result);
+                        res.status(201).json({contentID: content._id});
                     })
             })
     }));
@@ -132,6 +136,42 @@ module.exports = function (app, config) {
         var helpTicketContent = new HelpTicketContent(req.body);
         const result = await helpTicketContent.save()
         res.status(201).json(result);
+    }));
+
+    var storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            var path = config.uploads + '/helpTickets';
+            mkdirp(path, function (err) {
+                if (err) {
+                    res.status(500).json(err);
+                } else {
+                    cb(null, path);
+                }
+            });
+        },
+        filename: function (req, file, cb) {
+            file.fileName = file.originalname;
+            cb(null, file.fieldname + '-' + Date.now());
+        }
+    });
+
+    var upload = multer({ storage: storage });
+
+    router.post('/helpTicketContents/upload/:id', requireAuth, upload.any(), asyncHandler(async (req, res) => {
+        logger.log('info', 'Uploading files');
+        await HelpTicketContent.findById(req.params.id).then(result => {
+            for (var i = 0, x = req.files.length; i < x; i++) {
+                var file = {
+                    originalFileName: req.files[i].originalname,
+                    fileName: req.files[i].filename
+                };
+                console.log(file)
+                result.file = file;
+            }
+            result.save().then(result => {
+                res.status(200).json(result);
+            });
+        })
     }));
 
 };

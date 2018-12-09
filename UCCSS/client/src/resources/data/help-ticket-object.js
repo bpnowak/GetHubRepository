@@ -7,7 +7,7 @@ export class HelpTicket {
     constructor(data) {
         this.data = data;
         this.HELP_TICKET_SERVICE = 'helpTickets';
-        this.HELP_TICKETCONTENT_SERVICE = 'helpTicketContents/helpTicket';
+        this.HELP_TICKETCONTENT_SERVICE = 'helpTicketContents';
     }
 
     async getHelpTickets(userObj) {
@@ -55,7 +55,7 @@ export class HelpTicket {
     // }
 
     async getHelpTicketsContents(helpTicketId) {
-        let url = this.HELP_TICKETCONTENT_SERVICE + '/' + helpTicketId;
+        let url = this.HELP_TICKETCONTENT_SERVICE + '/helpTicket/' + helpTicketId;
         let response = await this.data.get(url);
         console.log(helpTicketId);
         if (!response.error) {
@@ -65,4 +65,8 @@ export class HelpTicket {
         }     
     }
 
+    async uploadFile(files, id) {
+        await this.data.uploadFiles(files, this.HELP_TICKETCONTENT_SERVICE + "/upload/" + id );
+    }
+    
 }
