@@ -30,7 +30,7 @@ export class Foo {
         }
     }
 
-    async deleteFoo(foo) {
+    async delete(foo) {
         if (foo && foo._id) {
             await this.data.delete(this.FOO_SERVICE + '/' + foo._id)
         }

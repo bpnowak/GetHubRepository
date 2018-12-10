@@ -37,13 +37,13 @@ export class Foos {
         this.openEditForm();
     }
 
-    async deleteFoo() {
-        if (this.foo) {
-            await this.foos.delete(this.foo);
-            await this.getFoos();
-            this.back();
-        }
-    }
+	async delete() {
+		if (this.foo) {
+		  await this.foos.delete(this.foo);
+		  await this.getFoos();
+		  this.back();
+		}
+	  }
 
     logout() {
         this.router.navigate('home');
